@@ -9,7 +9,7 @@ const commentController = {
         return Pizza.findOneAndUpdate(
           { _id: params.pizzaId },
           { $push: { comments: _id } },
-          { new: true }
+          { new: true, runValidators: true }
         );
       })
       .then((dbPizzaData) => {
@@ -21,12 +21,13 @@ const commentController = {
       })
       .catch((err) => res.json(err));
   },
-  // add reply
+
+  // add reply to comment
   addReply({ params, body }, res) {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
       { $push: { replies: body } },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .then((dbPizzaData) => {
         if (!dbPizzaData) {
@@ -37,6 +38,7 @@ const commentController = {
       })
       .catch((err) => res.json(err));
   },
+
   // remove comment
   removeComment({ params }, res) {
     Comment.findOneAndDelete({ _id: params.commentId })
